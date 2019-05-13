@@ -1,4 +1,3 @@
-setwd("C:/Users/user/Misaeng/데이터 분석/기독교와여성혐오")
 data <- read.csv("data.csv")
 attach(data)
 library(tidyverse)
@@ -44,7 +43,7 @@ table(SQ1)                                     # 성별
 table(SQ3)                                     # 연령
 t <- table(DM3); c(t[c(1, 2)], sum(t[3:7]))    # 거주지역(1:서울, 2:인천/경기, 3:수도권)
 table(DQ1_1)                                   # 혼인상태(3)
-table(DQ3_2)                                  # 학력(1:고졸이하, 2:대졸이상, 3:대학원이상)
+table(DQ3_2)                                   # 학력(1:고졸이하, 2:대졸이상, 3:대학원이상)
 t <- table(DQ4); c(sum(t[1:2]), t[3], sum(t[4:5]), sum(t[6:7]), t[8:11])  # 직업(8)
 t<- table(DM6); c(t[1:2], sum(t[3:4]), t[5:6]) # 가구소득(5)
 table(DM11)                                    # 이념성향(보수, 중도, 진보) 
