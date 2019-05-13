@@ -1,2 +1,1 @@
-# Discrimination_Research
-Analysis of Research data about Social Discrimination in Korea
+## Analysis of Research data about Social Discrimination in Korea
