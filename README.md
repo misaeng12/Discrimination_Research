@@ -1,1 +1,2 @@
-## Analysis of Research data about Social Discrimination in Korea
+## 한국사회의 사회적 차별과 혐오에 대한 시민의식 조사
+* 기독교인의 차별 경험과 여성혐오 인식에 대한 분석
