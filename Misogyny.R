@@ -20,8 +20,7 @@ data$SQ4_5 <- as.factor(SQ4_5)
 Q3.4 <- c()
 for(i in 1:nrow(data)){
   if(Q3[i]==1) Q3.4[i] <- ifelse(Q4_M1[i]==1, 1, 2)
-  if(Q3[i]==2) Q3.4[i] <- 2
-  if(Q3[i]==3) Q3.4[i] <- 3
+  else Q3.4[i] <- ifelse(Q3[i]==2, 2, 3)
 }
 data$Q3.4 <- as.factor(Q3.4)
 
@@ -138,20 +137,20 @@ d1$DQ1_1 <- as.factor(d1$DQ1_1)
 d1$Q20_1_1 <- as.factor(d1$Q20_1_1)
 d1$Q20_2 <- as.factor(d1$Q20_2)
 
-lm1 <- lm(FACTOR1 ~ SQ1 + SQ3 + DQ1_1 + DQ3_2 + DM6, d1)
-summary(lm1)
+lm1 <- lm(FACTOR3 ~ SQ1 + SQ3 + DQ1_1 + DQ3_2 + DM6, d1)
+s1 <- summary(lm1); s1$adj.r.squared
 
-lm2 <- lm(FACTOR2 ~ SQ1 + SQ3 + DQ1_1 + DQ3_2 + DM6 +
+lm2 <- lm(FACTOR3 ~ SQ1 + SQ3 + DQ1_1 + DQ3_2 + DM6 +
             RQ11_1 + RQ1_1 + Q3.4, d1)
-summary(lm2)
+s2 <- summary(lm2); s2$adj.r.squared
 
-lm3 <- lm(FACTOR2 ~ SQ1 + SQ3 + DQ1_1 + DQ3_2 + DM6 +
+lm3 <- lm(FACTOR3 ~ SQ1 + SQ3 + DQ1_1 + DQ3_2 + DM6 +
             RQ11_1 + RQ1_1 + Q3.4 +
             Q20_1_1 + Q20_2 + Q22 + Q23 + Q20_4 + Q20_5, d1)
-summary(lm3)
+s3 <- summary(lm3); s3$adj.r.squared
 
-lm4 <- lm(FACTOR2 ~ SQ1 + SQ3 + DQ1_1 + DQ3_2 + DM6 +
+lm4 <- lm(FACTOR3 ~ SQ1 + SQ3 + DQ1_1 + DQ3_2 + DM6 +
             RQ11_1 + RQ1_1 + Q3.4 +
             Q20_1_1 + Q20_2 + Q22 + Q23 + Q20_4 + Q20_5 +
             RQ20_3 + RQ24 + RQ25 + RQ28, d1)
-summary(lm4)
+s4 <- summary(lm4); s4$adj.r.squared
