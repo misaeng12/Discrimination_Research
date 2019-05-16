@@ -16,7 +16,7 @@ for(i in 1:nrow(data)){
 }
 data$SQ4_5 <- as.factor(SQ4_5)
 
-### 성차별 경험 변수 생성 (1:있음, 2:없음, 3:잘모르겠음)
+### 성차별 경험 변수 생성 (1:없음, 2:없음, 3:잘모르겠음)
 Q3.4 <- c()
 for(i in 1:nrow(data)){
   if(Q3[i]==1) Q3.4[i] <- ifelse(Q4_M1[i]==1, 1, 2)
@@ -131,26 +131,100 @@ summary(aov(data=d1, FACTOR2 ~ as.factor(Q22)))
 
 ### 기독교인의 여성혐오 영향 요인에 대한 다중회귀분석
 
-d1$SQ1 <- as.factor(d1$SQ1)
-d1$SQ3 <- as.factor(d1$SQ3)
-d1$DQ1_1 <- as.factor(d1$DQ1_1)
-d1$Q20_1_1 <- as.factor(d1$Q20_1_1)
-d1$Q20_2 <- as.factor(d1$Q20_2)
+data$SQ1 <- as.factor(data$SQ1)
+data$SQ3 <- as.factor(data$SQ3)
+data$DQ1_1 <- as.factor(data$DQ1_1)
+data$DQ3_2 <- as.factor(data$DQ3_2)
+data$Q20_1_1 <- as.factor(data$Q20_1_1)
+data$Q20_2 <- as.factor(data$Q20_2)
+data$Q3.4 <- relevel(as.factor(data$Q3.4), ref=2)
+data$Q20_4 <- relevel(as.factor(data$Q20_4), ref=2)
+data$Q20_5 <- relevel(as.factor(data$Q20_5), ref=2)
+d1 <- filter(data, SQ4_5==1)
 
-lm1 <- lm(FACTOR3 ~ SQ1 + SQ3 + DQ1_1 + DQ3_2 + DM6, d1)
-s1 <- summary(lm1); s1$adj.r.squared
+lm1 <- lm(FACTOR ~ SQ1 + SQ3 + DQ1_1 + DQ3_2 + DM6, d1)
+summary(lm1)
 
 lm2 <- lm(FACTOR3 ~ SQ1 + SQ3 + DQ1_1 + DQ3_2 + DM6 +
             RQ11_1 + RQ1_1 + Q3.4, d1)
-s2 <- summary(lm2); s2$adj.r.squared
+summary(lm2)
 
-lm3 <- lm(FACTOR3 ~ SQ1 + SQ3 + DQ1_1 + DQ3_2 + DM6 +
+lm3 <- lm(FACTOR ~ SQ1 + SQ3 + DQ1_1 + DQ3_2 + DM6 +
             RQ11_1 + RQ1_1 + Q3.4 +
             Q20_1_1 + Q20_2 + Q22 + Q23 + Q20_4 + Q20_5, d1)
-s3 <- summary(lm3); s3$adj.r.squared
+summary(lm3)
 
 lm4 <- lm(FACTOR3 ~ SQ1 + SQ3 + DQ1_1 + DQ3_2 + DM6 +
             RQ11_1 + RQ1_1 + Q3.4 +
             Q20_1_1 + Q20_2 + Q22 + Q23 + Q20_4 + Q20_5 +
             RQ20_3 + RQ24 + RQ25 + RQ28, d1)
-s4 <- summary(lm4); s4$adj.r.squared
+summary(lm4)
+
+
+## stepwise
+
+lm <- lm(FACTOR ~ SQ1 + SQ3 + DQ1_1 + DQ3_2 + DM6 + RQ11_1 + RQ1_1 + Q3.4 + Q20_1_1 +
+          Q20_2 + Q22 + Q23 + Q20_4 + Q20_5 + RQ20_3 + RQ24 + RQ25 + RQ28, d1)
+lm.step <- step(lm)
+summary(lm.step)
+
+lm1 <- lm(FACTOR1 ~ SQ1 + SQ3 + DQ1_1 + DQ3_2 + DM6 + RQ11_1 + RQ1_1 + Q3.4 + Q20_1_1 +
+           Q20_2 + Q22 + Q23 + Q20_4 + Q20_5 + RQ20_3 + RQ24 + RQ25 + RQ28, d1)
+lm1.step <- step(lm1)
+summary(lm1.step)
+
+lm2 <- lm(FACTOR2 ~ SQ1 + SQ3 + DQ1_1 + DQ3_2 + DM6 + RQ11_1 + RQ1_1 + Q3.4 + Q20_1_1 +
+           Q20_2 + Q22 + Q23 + Q20_4 + Q20_5 + RQ20_3 + RQ24 + RQ25 + RQ28, d1)
+lm2.step <- step(lm2)
+summary(lm2.step)
+
+lm3 <- lm(FACTOR3 ~ SQ1 + SQ3 + DQ1_1 + DQ3_2 + DM6 + RQ11_1 + RQ1_1 + Q3.4 + Q20_1_1 +
+           Q20_2 + Q22 + Q23 + Q20_4 + Q20_5 + RQ20_3 + RQ24 + RQ25 + RQ28, d1)
+lm3.step <- step(lm3)
+summary(lm3.step)
+
+
+## 종교별 차이 비교 (교회 관련 변수 제외)
+
+# 기독교
+lm <- lm(FACTOR ~ SQ1 + SQ3 + DQ1_1 + DQ3_2 + DM6 + RQ11_1 + RQ1_1 + Q3.4, d1)
+lm.step <- step(lm); summary(lm.step)
+lm1 <- lm(FACTOR1 ~ SQ1 + SQ3 + DQ1_1 + DQ3_2 + DM6 + RQ11_1 + RQ1_1 + Q3.4, d1)
+lm1.step <- step(lm1); summary(lm1.step)
+lm2 <- lm(FACTOR2 ~ SQ1 + SQ3 + DQ1_1 + DQ3_2 + DM6 + RQ11_1 + RQ1_1 + Q3.4, d1)
+lm2.step <- step(lm2); summary(lm2.step)
+lm3 <- lm(FACTOR3 ~ SQ1 + SQ3 + DQ1_1 + DQ3_2 + DM6 + RQ11_1 + RQ1_1 + Q3.4, d1)
+lm3.step <- step(lm3); summary(lm3.step)
+
+# 타종교
+d2 <- filter(data, data$SQ4_5==2)
+lm <- lm(FACTOR ~ SQ1 + SQ3 + DQ1_1 + DQ3_2 + DM6 + RQ11_1 + RQ1_1 + Q3.4, d2)
+lm.step <- step(lm); summary(lm.step)
+lm1 <- lm(FACTOR1 ~ SQ1 + SQ3 + DQ1_1 + DQ3_2 + DM6 + RQ11_1 + RQ1_1 + Q3.4, d2)
+lm1.step <- step(lm1); summary(lm1.step)
+lm2 <- lm(FACTOR2 ~ SQ1 + SQ3 + DQ1_1 + DQ3_2 + DM6 + RQ11_1 + RQ1_1 + Q3.4, d2)
+lm2.step <- step(lm2); summary(lm2.step)
+lm3 <- lm(FACTOR3 ~ SQ1 + SQ3 + DQ1_1 + DQ3_2 + DM6 + RQ11_1 + RQ1_1 + Q3.4, d2)
+lm3.step <- step(lm3); summary(lm3.step)
+
+# 무종교
+d3 <- filter(data, data$SQ4_5==3)
+lm <- lm(FACTOR ~ SQ1 + SQ3 + DQ1_1 + DQ3_2 + DM6 + RQ11_1 + RQ1_1 + Q3.4, d3)
+lm.step <- step(lm); summary(lm.step)
+lm1 <- lm(FACTOR1 ~ SQ1 + SQ3 + DQ1_1 + DQ3_2 + DM6 + RQ11_1 + RQ1_1 + Q3.4, d3)
+lm1.step <- step(lm1); summary(lm1.step)
+lm2 <- lm(FACTOR2 ~ SQ1 + SQ3 + DQ1_1 + DQ3_2 + DM6 + RQ11_1 + RQ1_1 + Q3.4, d3)
+lm2.step <- step(lm2); summary(lm2.step)
+lm3 <- lm(FACTOR3 ~ SQ1 + SQ3 + DQ1_1 + DQ3_2 + DM6 + RQ11_1 + RQ1_1 + Q3.4, d3)
+lm3.step <- step(lm3); summary(lm3.step)
+
+# 전체 data (종교 변수 포함)
+data$SQ4_5 <- as.factor(data$SQ4_5)
+lm <- lm(FACTOR ~ SQ1 + SQ3 + DQ1_1 + DQ3_2 + DM6 + RQ11_1 + RQ1_1 + Q3.4 + SQ4_5, data)
+lm.step <- step(lm); summary(lm.step)
+lm1 <- lm(FACTOR1 ~ SQ1 + SQ3 + DQ1_1 + DQ3_2 + DM6 + RQ11_1 + RQ1_1 + Q3.4 + SQ4_5, data)
+lm1.step <- step(lm1); summary(lm1.step)
+lm2 <- lm(FACTOR2 ~ SQ1 + SQ3 + DQ1_1 + DQ3_2 + DM6 + RQ11_1 + RQ1_1 + Q3.4 + SQ4_5, data)
+lm2.step <- step(lm2); summary(lm2.step)
+lm3 <- lm(FACTOR3 ~ SQ1 + SQ3 + DQ1_1 + DQ3_2 + DM6 + RQ11_1 + RQ1_1 + Q3.4 + SQ4_5, data)
+lm3.step <- step(lm3); summary(lm3.step)
