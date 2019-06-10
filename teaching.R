@@ -1,7 +1,6 @@
 library(dplyr)
 library(ggplot2)
 
-data <- read.csv("C:/Users/user/Misaeng/폴더/교직부/data.csv")
 data <- data[2:359,] %>% select(학교종류, X9, X10, X11, X12, X13, X14, X16)
 data[!complete.cases(data),]
 data <- data[-285,]
